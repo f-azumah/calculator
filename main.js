@@ -42,7 +42,7 @@ const labels = [
 
 for (let i = 0; i < labels.length; i++){
     let btn = document.createElement('button');
-    btn.setAttribute("style", "width: 75px; height: 50px; box-sizing: border-box; font-family: Anta; font-size: 24px");
+    btn.setAttribute("style", "width: 75px; height: 50px; box-sizing: border-box; font-family: Anta; font-size: 24px; border-radius: 20px");
     btn.textContent = labels[i];
     buttons.appendChild(btn);
 

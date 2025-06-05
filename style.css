@@ -8,9 +8,9 @@ body{
     flex-direction: column;
     align-items: center;
     background-color: #6cb1da;
-    border: 15px outset #212fae;
-    width: 500px;
-    height: 650px;
+    border: 5px outset #212fae;
+    width: 400px;
+    height: 600px;
     box-sizing: border-box;
 }
 
