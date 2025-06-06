@@ -20,14 +20,44 @@ let num2 = 0;
 
 function operate(operator, num1, num2){
     if(operator === "+"){
-        add(num1, num2);
+        return add(num1, num2);
     } else if (operator === "-"){
-        subtract(num1, num2);
+        return subtract(num1, num2);
     } else if (operator === "*"){
-        multiply(num1, num2);
+        return multiply(num1, num2);
     } else if (operator === "/"){
-        divide(num1, num2);
+        return divide(num1, num2);
     }
+}
+
+let currentInput = "";
+function appendDigit(digit){
+    currentInput += digit;
+    display.textContent = "";
+    display.textContent = currentInput;
+}
+
+function clearDisplay(){
+    display.textContent = "";
+    currentInput = "";
+}
+
+function deleteDigit(){
+    currentInput = currentInput.slice(0,-1);
+    display.textContent = currentInput;
+}
+
+function setOperator(op){
+    num1 = Number(currentInput);
+    operator = op;
+
+    display.textContent = "";
+    currentInput = "";
+}
+
+function evaluate(){
+    num2 = Number(currentInput);
+    display.textContent = operate(operator, num1, num2);
 }
 
 let buttons = document.querySelector(".buttons");
@@ -46,7 +76,18 @@ for (let i = 0; i < labels.length; i++){
     btn.textContent = labels[i];
     buttons.appendChild(btn);
 
-    btn.addEventListener("click", () => {
-        display.textContent += labels[i];
+    btn.addEventListener("click", (event) => {
+        const value = event.target.textContent
+        if(!isNaN(value) || value === "."){
+            appendDigit(value);
+        } else if("+-*/".includes(value)){
+            setOperator(value);
+        } else if(value === "="){
+            evaluate();
+        } else if(value === "AC"){
+            clearDisplay();
+        } else if(value === "DEL"){
+            deleteDigit();
+        }
     } )
 }
