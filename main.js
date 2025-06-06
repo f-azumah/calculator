@@ -11,11 +11,21 @@ function multiply(a, b){
 }
 
 function divide(a, b){
-    return a / b;
+    if (b != 0){
+        return a / b;
+    }
+
+    let errorMessage = document.createElement('p');
+    errorMessage.setAttribute("style", "font-size: 20px; font-family: Anta");
+    errorMessage.textContent = "ERROR: DIVIDE BY 0";
+    currentInput = "";
+    display.textContent = "";
+    display.appendChild(errorMessage);
+    return null;
 }
 
 let num1 = 0;
-let operator;
+let operator = "";
 let num2 = 0;
 
 function operate(operator, num1, num2){
@@ -31,15 +41,24 @@ function operate(operator, num1, num2){
 }
 
 let currentInput = "";
+let justEvaluated = false;
+
 function appendDigit(digit){
+    if (justEvaluated){
+        currentInput = "";
+        display.textContent = "";
+        justEvaluated = false;
+    }
     currentInput += digit;
-    display.textContent = "";
     display.textContent = currentInput;
 }
 
 function clearDisplay(){
     display.textContent = "";
     currentInput = "";
+    num1 = "";
+    op = "";
+    num2 = "";
 }
 
 function deleteDigit(){
@@ -50,14 +69,24 @@ function deleteDigit(){
 function setOperator(op){
     num1 = Number(currentInput);
     operator = op;
-
-    display.textContent = "";
+    if (!justEvaluated) {
+        display.textContent = "";
+    }
     currentInput = "";
+    justEvaluated = false;
 }
 
 function evaluate(){
     num2 = Number(currentInput);
-    display.textContent = operate(operator, num1, num2);
+    const result = operate(operator, num1, num2);
+
+    if (result === null) return;
+
+    // console.log("result: " + result);
+    display.textContent = result.toString();
+    currentInput = result.toString();
+    operator = ""
+    justEvaluated = true;
 }
 
 let buttons = document.querySelector(".buttons");
@@ -77,11 +106,16 @@ for (let i = 0; i < labels.length; i++){
     buttons.appendChild(btn);
 
     btn.addEventListener("click", (event) => {
-        const value = event.target.textContent
+        const value = event.target.textContent;
         if(!isNaN(value) || value === "."){
             appendDigit(value);
         } else if("+-*/".includes(value)){
-            setOperator(value);
+            if (operator.length === 0){
+                setOperator(value);
+             } else {
+                evaluate();
+                setOperator(value);          
+            }
         } else if(value === "="){
             evaluate();
         } else if(value === "AC"){
